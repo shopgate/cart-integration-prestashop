@@ -27,7 +27,7 @@ jobs:
     - curl -L http://files.shopgate.com/travis-ci/php-cs-fixer.phar -o php-cs-fixer
     - chmod a+x php-cs-fixer
     - git checkout $TRAVIS_BRANCH
-    - ./php-cs-fixer fix --config=.php-cs.dist --cache-file=.php-cs.cache --diff --dry-run --verbose .
+    - ./php-cs-fixer fix --config=.php-cs.dist --cache-file=.php-cs.cache --diff --dry-run --verbose
     - rm php-cs-fixer
     - src/vendors/bin/phpunit
   - stage: deploy
