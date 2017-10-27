@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [Unreleased]
 
 
-## 2.9.83
+## 2.9.83 - 2017-10-27
 ### Changed
 - migrated Shopgate integration for Prestashop to GitHub
 - extended error handling for database transactions
