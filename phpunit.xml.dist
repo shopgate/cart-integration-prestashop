@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="src/vendors/phpunit/phpunit/phpunit.xsd"
+         colors="true"
+>
+    <testsuite name="Unit tests">
+        <directory suffix="Test.php">tests/Unit</directory>
+    </testsuite>
+    <php>
+        <ini name="date.timezone" value="America/Los_Angeles" />
+        <ini name="xdebug.max_nesting_level" value="200" />
+        <const name="_PS_VERSION_" value="1.6.0.9" />
+        <const name="_PS_MODULE_DIR_" value="../../../" />
+    </php>
+</phpunit>

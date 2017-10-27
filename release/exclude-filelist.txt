@@ -1,0 +1,11 @@
+.git/
+.gitignore
+.travis.yml
+.php-cs.cache
+.php-cs.dist
+.travis.yml
+build_release_package.sh
+release/
+missing_classes.php
+missing_constants.php
+shopgate-prestashop-integration.zip

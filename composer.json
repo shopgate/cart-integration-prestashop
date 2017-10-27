@@ -1,0 +1,49 @@
+{
+  "name": "shopgate/cart-integration-prestashop",
+  "description": "Integrates the Prestashop shopping cart solution with Shopgate",
+  "homepage": "https://github.com/shopgate/cart-integration-prestashop",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Shopgate",
+      "email": "interfaces@shopgate.com"
+    }
+  ],
+  "config": {
+    "platform": {
+      "php": "5.3.3"
+    },
+    "vendor-dir": "src/vendors"
+  },
+  "repositories": [
+    {
+      "type":"package",
+      "package": {
+        "name": "shopgate/prestashop-backward-compatibility",
+        "version":"1.0",
+        "source": {
+          "url": "https://github.com/PrestaShop/PrestaShop-backward_compatibility",
+          "type": "git",
+          "reference":"master"
+        }
+      }
+    }
+  ],
+  "require": {
+    "php": ">=5.3",
+    "shopgate/cart-integration-sdk" : "~2.9.65",
+    "shopgate/prestashop-backward-compatibility": "1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "4.8.*"
+  },
+  "autoload-dev": {
+    "files": [
+      "tests/Stubs/includes.php",
+      "src/includes.php"
+    ],
+    "psr-4": {
+      "Shopgate\\Tests\\": "tests"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+/.buildpath
+/.project
+/*.zip
+/nbproject
+/.settings
+/.idea
+.DS_Store
+src/vendors
+/.php-cs.cache
+/release/package
