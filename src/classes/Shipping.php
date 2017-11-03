@@ -54,7 +54,8 @@ class ShopgateShipping
             ShopgateDeliveryNote::TNT        => $module->l('TNT'),
             ShopgateDeliveryNote::TOF        => $module->l('trans-o-flex'),
             ShopgateDeliveryNote::UPS        => $module->l('UPS'),
-            'LAPOSTE'                        => $module->l('LA POSTE'),
+            ShopgateDeliveryNote::LAPOSTE    => $module->l('LA POSTE'),
+            ShopgateDeliveryNote::COLL_STORE => $module->l('Store Pickup'),
         );
     }
 
