@@ -5,7 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
-
+### Fixed
+- added store pickup to shipping_service_list
+### Changed
+- use constant instead of string as key for LA POST shipping service element when adding it to shipping_service_list
+- set plugin to use version 2.9.71 of cart-integration-sdk instead of 2.9.69
 
 ## 2.9.83 - 2017-10-27
 ### Changed
