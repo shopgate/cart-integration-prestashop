@@ -62,6 +62,38 @@ class ShopgateSettings
     }
 
     /**
+     * @param array $carrierList
+     * @param array $newSettings
+     */
+    public static function saveSettings(array $carrierList, array $newSettings) {
+        $carrierIdColumn = version_compare(_PS_VERSION_, '1.5.0.1', '>=')
+            ? 'id_reference'
+            : 'id_carrier';
+
+        $settings = array();
+        foreach ($carrierList as $carrier) {
+            $settings['SG_MOBILE_CARRIER'][(int)$carrier[$carrierIdColumn]] = 0;
+        }
+
+        foreach ($newSettings as $key => $value) {
+            if (!empty($value) && is_array($value) && !empty($settings[$key])) {
+                $settings[$key] = $value + $settings[$key];
+            } else {
+                $settings[$key] = $value;
+            }
+        }
+
+        foreach ($settings as $key => $value) {
+            if (in_array($key, ShopgateSettings::getSettingKeys())) {
+                if (is_array($value)) {
+                    $value = base64_encode(serialize($value));
+                }
+                Configuration::updateValue($key, htmlentities($value, ENT_QUOTES));
+            }
+        }
+    }
+
+    /**
      * @param $paymentIdentifier
      *
      * @return string
