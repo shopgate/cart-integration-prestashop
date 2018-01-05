@@ -74,6 +74,9 @@ class ShopgateConfigPrestashop extends ShopgateConfig
         if (!Configuration::get(self::PRESTASHOP_CONFIG_KEY)) {
             $this->initialize();
             $this->saveConfigurationFields();
+
+            // Configuration::get won't be able to read the newly saved Configuration correctly until a new request happens
+            return true;
         }
 
         $this->loadFromPrestashopConfiguration();
@@ -94,9 +97,9 @@ class ShopgateConfigPrestashop extends ShopgateConfig
      */
     public function saveConfigurationFields($fieldList = array())
     {
-        $configuration = array_merge($this->getShopgateConfigurationFromPrestashop(), $this->getCurrentConfigurationFields($fieldList));
+        $updatedConfiguration = array_merge($this->getConfigurationFromPrestashop(), $this->getCurrentConfigurationFields($fieldList));
 
-        Configuration::updateValue(self::PRESTASHOP_CONFIG_KEY, base64_encode(serialize($configuration)));
+        Configuration::updateValue(self::PRESTASHOP_CONFIG_KEY, base64_encode(serialize($updatedConfiguration)));
     }
 
     /**
@@ -122,9 +125,15 @@ class ShopgateConfigPrestashop extends ShopgateConfig
     /**
      * @return array
      */
-    protected function getShopgateConfigurationFromPrestashop()
+    protected function getConfigurationFromPrestashop()
     {
-        return unserialize(base64_decode(Configuration::get(self::PRESTASHOP_CONFIG_KEY)));
+        $shopgateConfiguration = unserialize(base64_decode(Configuration::get(self::PRESTASHOP_CONFIG_KEY)));
+
+        if ($shopgateConfiguration === null) {
+            $shopgateConfiguration = array();
+        }
+
+        return $shopgateConfiguration;
     }
 
     /**
@@ -132,11 +141,11 @@ class ShopgateConfigPrestashop extends ShopgateConfig
      */
     protected function loadFromPrestashopConfiguration()
     {
-        $currentShopgateConfig = $this->getShopgateConfigurationFromPrestashop();
-        $currentShopgateConfig = $this->fixShopNumber($currentShopgateConfig);
+        $currentConfiguration = $this->getConfigurationFromPrestashop();
+        $currentConfiguration = $this->fixShopNumber($currentConfiguration);
 
-        if (is_array($currentShopgateConfig)) {
-            $this->loadArray($currentShopgateConfig);
+        if (!empty($currentConfiguration)) {
+            $this->loadArray($currentConfiguration);
         }
     }
 
@@ -367,8 +376,12 @@ class ShopgateConfigPrestashop extends ShopgateConfig
      *
      * @return array(shop_number, language)
      */
-    protected function fixShopNumber(array $currentShopgateConfig = null)
+    protected function fixShopNumber(array $currentShopgateConfig)
     {
+        if (empty($currentShopgateConfig)) {
+            return $currentShopgateConfig;
+        }
+
         $shopNumbers           = array();
         $isoCode               = Language::getIsoById(Configuration::get('PS_LANG_DEFAULT'));
         $shopNumbers[$isoCode] = $currentShopgateConfig['shop_number'];
