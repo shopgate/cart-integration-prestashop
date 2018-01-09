@@ -21,24 +21,15 @@
  */
 class ShopgateConfigPrestashop extends ShopgateConfig
 {
-    /**
-     * default plugin name
-     */
-    const DEFAULT_PLUGIN_NAME = 'prestashop';
-    /**
-     * default config identifier
-     */
-    const DEFAULT_CONFIG_NAME = 'SHOPGATE_CONFIG';
+    const PLUGIN_NAME = 'prestashop';
+    const PRESTASHOP_CONFIG_KEY = 'SHOPGATE_CONFIG';
 
     /** @var int */
     protected $_langId;
 
-    /**
-     * init defaults
-     */
-    protected function initDefaults()
+    protected function initialize()
     {
-        $this->plugin_name = self::DEFAULT_PLUGIN_NAME;
+        $this->plugin_name = self::PLUGIN_NAME;
         $this->enable_ping = 1;
 
         $this->supported_fields_check_cart
@@ -76,30 +67,21 @@ class ShopgateConfigPrestashop extends ShopgateConfig
     }
 
     /**
-     * create defaults / load from config
-     *
-     * @return bool|void
+     * @return bool
      */
     public function startup()
     {
-        if (!Configuration::get(self::DEFAULT_CONFIG_NAME)) {
-            $this->cleanupConfig();
+        if (!Configuration::get(self::PRESTASHOP_CONFIG_KEY)) {
+            $this->initialize();
+            $this->saveConfigurationFields();
+
+            // Configuration::get won't be able to read the newly saved Configuration correctly until a new request happens
+            return true;
         }
 
-        $this->setFromConfig();
+        $this->loadFromPrestashopConfiguration();
 
         return true;
-    }
-
-    /**
-     * set by key
-     *
-     * @param $key
-     * @param $value
-     */
-    public function setByKey($key, $value)
-    {
-        $this->$key = $value;
     }
 
     /**
@@ -111,54 +93,59 @@ class ShopgateConfigPrestashop extends ShopgateConfig
     }
 
     /**
-     * store config
+     * @param array $fieldList
      */
-    public function store()
+    public function saveConfigurationFields($fieldList = array())
     {
-        $vars = array();
-        foreach (get_object_vars($this) as $key => $value) {
-            $vars[$key] = $value;
-        }
+        $updatedConfiguration = array_merge($this->getConfigurationFromPrestashop(), $this->getCurrentConfigurationFields($fieldList));
 
-        Configuration::updateValue(self::DEFAULT_CONFIG_NAME, base64_encode(serialize($vars)));
+        Configuration::updateValue(self::PRESTASHOP_CONFIG_KEY, base64_encode(serialize($updatedConfiguration)));
     }
 
     /**
-     * set from config
+     * Returns all current configuration values of $this
+     *
+     * @param array $fieldList optional filter for specific fields
+     * @return array
      */
-    protected function setFromConfig()
+    protected function getCurrentConfigurationFields($fieldList = array())
     {
-        $storedConfig = unserialize(base64_decode(Configuration::get(self::DEFAULT_CONFIG_NAME)));
-
-        /**
-         * fix for old set shop numbers in config
-         */
-        if ($this->isSerialized($storedConfig['shop_number'])) {
-            $shopNumbers = unserialize($storedConfig['shop_number']);
-        } else {
-            $shopNumbers = $storedConfig['shop_number'];
-        }
-
-        if (!is_array($shopNumbers)) {
-            $shopNumbers           = array();
-            $isoCode               = Language::getIsoById(Configuration::get('PS_LANG_DEFAULT'));
-            $shopNumbers[$isoCode] = $storedConfig['shop_number'];
-        }
-
-        if (Tools::getValue('shop_number')) {
-            foreach ($shopNumbers as $lang => $shopNumber) {
-                if (Tools::getValue('shop_number') == $shopNumber) {
-                    $storedConfig['shop_number'] = $shopNumber;
-                    $storedConfig['language']    = $lang;
-                    break;
-                }
+        $configurationFields = array();
+        foreach (get_object_vars($this) as $key => $value) {
+            if (!empty($fieldList) && !in_array($key, $fieldList)) {
+                continue;
             }
+
+            $configurationFields[$key] = $value;
         }
 
-        if (is_array($storedConfig)) {
-            foreach ($storedConfig as $key => $value) {
-                $this->$key = $value;
-            }
+        return $configurationFields;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getConfigurationFromPrestashop()
+    {
+        $shopgateConfiguration = unserialize(base64_decode(Configuration::get(self::PRESTASHOP_CONFIG_KEY)));
+
+        if ($shopgateConfiguration === null) {
+            $shopgateConfiguration = array();
+        }
+
+        return $shopgateConfiguration;
+    }
+
+    /**
+     * loads all values of the Shopgate configuration from Prestashop configuration by key PRESTASHOP_CONFIG_KEY
+     */
+    protected function loadFromPrestashopConfiguration()
+    {
+        $currentConfiguration = $this->getConfigurationFromPrestashop();
+        $currentConfiguration = $this->fixShopNumber($currentConfiguration);
+
+        if (!empty($currentConfiguration)) {
+            $this->loadArray($currentConfiguration);
         }
     }
 
@@ -168,67 +155,32 @@ class ShopgateConfigPrestashop extends ShopgateConfig
      */
     public function save(array $fieldList, $validate = true)
     {
-        $this->store();
+        $this->saveConfigurationFields($fieldList);
     }
 
-    /**
-     * init folders
-     */
     public function initFolders()
     {
-        $result = array();
+        $this->export_folder_path = $this->getPathByShopNumber($this->getShopNumber());
+        $this->log_folder_path    = $this->getPathByShopNumber($this->getShopNumber(), 'logs');
+        $this->cache_folder_path  = $this->getPathByShopNumber($this->getShopNumber(), 'cache');
 
-        /**
-         * tmp folder
-         */
-        $this->createFolder($this->getPathByShopNumber($this->getShopNumber()));
-        $result['export_folder_path'] = $this->getPathByShopNumber($this->getShopNumber());
-
-        /**
-         * logs
-         */
-        $this->createFolder($this->getPathByShopNumber($this->getShopNumber(), 'logs'));
-        $result['log_folder_path'] = $this->getPathByShopNumber($this->getShopNumber(), 'logs');
-
-        /**
-         * cache
-         */
-        $this->createFolder($this->getPathByShopNumber($this->getShopNumber(), 'cache'));
-        $result['cache_folder_path'] = $this->getPathByShopNumber($this->getShopNumber(), 'cache');
-
-        return $result;
+        $this->createFolder($this->export_folder_path);
+        $this->createFolder($this->log_folder_path);
+        $this->createFolder($this->cache_folder_path);
     }
 
     /**
-     * create folder by path
-     *
-     * @param      $path
-     * @param int  $mode
-     * @param bool $recursive
-     *
-     * @throws ShopgateLibraryException
+     * @param string $path
+     * @param int    $mode
+     * @param bool   $recursive
      */
     protected function createFolder($path, $mode = 0777, $recursive = true)
     {
-        if (!is_dir($path)) {
-            try {
-                mkdir($path, $mode, $recursive);
-            } catch (ShopgateLibraryException $e) {
-                throw new ShopgateLibraryException(
-                    ShopgateLibraryException::CONFIG_READ_WRITE_ERROR,
-                    sprintf('The folder "%s" could not be created.', $path)
-                );
-            }
+        if (is_dir($path)) {
+            return;
         }
-    }
 
-    /**
-     * create empty config
-     */
-    public function cleanupConfig()
-    {
-        $this->initDefaults();
-        $this->store();
+        mkdir($path, $mode, $recursive);
     }
 
     /**
@@ -388,7 +340,7 @@ class ShopgateConfigPrestashop extends ShopgateConfig
                 '`',
                 '\`',
                 pSQL(Configuration::$definition['table'])
-            ) . '` WHERE `name` = "' . pSQL(self::DEFAULT_CONFIG_NAME) . '"';
+            ) . '` WHERE `name` = "' . pSQL(self::PRESTASHOP_CONFIG_KEY) . '"';
         $result = $db->executeS($query, false);
         while ($row = $db->nextRow($result)) {
             if (!$data = @unserialize(base64_decode($row['value']))) {
@@ -415,5 +367,39 @@ class ShopgateConfigPrestashop extends ShopgateConfig
                 'id_configuration=' . $row['id_configuration']
             );
         }
+    }
+
+    /**
+     * fix for old shop_numbers in config
+     *
+     * @param array $currentShopgateConfig
+     *
+     * @return array(shop_number, language)
+     */
+    protected function fixShopNumber(array $currentShopgateConfig)
+    {
+        if (empty($currentShopgateConfig)) {
+            return $currentShopgateConfig;
+        }
+
+        $shopNumbers           = array();
+        $isoCode               = Language::getIsoById(Configuration::get('PS_LANG_DEFAULT'));
+        $shopNumbers[$isoCode] = $currentShopgateConfig['shop_number'];
+
+        if ($this->isSerialized($currentShopgateConfig['shop_number'])) {
+            $shopNumbers = unserialize($currentShopgateConfig['shop_number']);
+        }
+
+        if (Tools::getValue('shop_number')) {
+            foreach ($shopNumbers as $lang => $shopNumber) {
+                if (Tools::getValue('shop_number') == $shopNumber) {
+                    $currentShopgateConfig['shop_number'] = $shopNumber;
+                    $currentShopgateConfig['language']    = $lang;
+                    break;
+                }
+            }
+        }
+
+        return $currentShopgateConfig;
     }
 }

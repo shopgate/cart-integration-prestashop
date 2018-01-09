@@ -21,7 +21,7 @@
  */
 class ShopgateSettings
 {
-    const PRODUCT_EXPORT_DESCRIPTION       = 'DESCRIPTION';
+    const PRODUCT_EXPORT_DESCRIPTION = 'DESCRIPTION';
     const PRODUCT_EXPORT_SHORT_DESCRIPTION = 'SHORT';
     const PRODUCT_EXPORT_BOTH_DESCRIPTIONS = 'BOTH';
     const DEFAULT_ORDER_NEW_STATE_KEY_PATTERN = 'SG_ONS_%s';
@@ -59,6 +59,39 @@ class ShopgateSettings
         );
 
         return $configuration;
+    }
+
+    /**
+     * @param array $carrierList
+     * @param array $newSettings
+     */
+    public static function saveSettings(array $carrierList, array $newSettings)
+    {
+        $carrierIdColumn = version_compare(_PS_VERSION_, '1.5.0.1', '>=')
+            ? 'id_reference'
+            : 'id_carrier';
+
+        $settings = array();
+        foreach ($carrierList as $carrier) {
+            $settings['SG_MOBILE_CARRIER'][(int)$carrier[$carrierIdColumn]] = 0;
+        }
+
+        foreach ($newSettings as $key => $value) {
+            if (!empty($value) && is_array($value) && !empty($settings[$key])) {
+                $settings[$key] = $value + $settings[$key];
+            } else {
+                $settings[$key] = $value;
+            }
+        }
+
+        foreach ($settings as $key => $value) {
+            if (in_array($key, ShopgateSettings::getSettingKeys())) {
+                if (is_array($value)) {
+                    $value = base64_encode(serialize($value));
+                }
+                Configuration::updateValue($key, htmlentities($value, ENT_QUOTES));
+            }
+        }
     }
 
     /**
@@ -165,11 +198,11 @@ class ShopgateSettings
     {
         $taxRatesQuery
             = 'SELECT c.id_country,c.id_zone,c.iso_code,z.id_zone,z.name,tl.name,t.rate,t.id_tax,ts.id_state FROM '
-            . _DB_PREFIX_ . 'country AS c
+              . _DB_PREFIX_ . 'country AS c
                         JOIN ' . _DB_PREFIX_ . 'zone AS z ON (c.id_zone=z.id_zone AND z.active=1)
                         JOIN ' . _DB_PREFIX_ . 'tax_zone AS tz ON tz.id_tax=z.id_zone
                         JOIN ' . _DB_PREFIX_ . 'tax_lang AS tl ON (tl.id_tax=tz.id_tax AND tl.id_lang='
-            . (int)$module->context->language->id . ')
+              . (int)$module->context->language->id . ')
                         LEFT JOIN ' . _DB_PREFIX_ . 'tax AS t ON t.id_tax=tl.id_tax
                         LEFT JOIN ' . _DB_PREFIX_ . 'tax_state AS ts ON ts.id_tax=t.id_tax
                         WHERE c.active=1 AND t.active = 1';
@@ -187,7 +220,7 @@ class ShopgateSettings
 
             if (!empty($rate['id_state']) && !empty($rate['id_country']) && !empty($rate['id_zone'])) {
                 $stateQuery   = 'SELECT * FROM ' . _DB_PREFIX_ . 'state AS s WHERE s.id_state=' . $rate['id_state']
-                    . ' AND s.id_country=' . $rate['id_country'] . ' AND s.id_zone=' . $rate['id_zone'];
+                                . ' AND s.id_country=' . $rate['id_country'] . ' AND s.id_zone=' . $rate['id_zone'];
                 $resultStates = Db::getInstance()->ExecuteS($stateQuery);
                 foreach ($resultStates as $state) {
                     $taxItemTmp['state'] = $taxItemTmp['country'] . '-' . $state['iso_code'];

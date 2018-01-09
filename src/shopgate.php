@@ -189,7 +189,7 @@ class ShopGate extends PaymentModule
         /**
          * delete shopgate config
          */
-        Configuration::deleteByName(ShopgateConfigPrestashop::DEFAULT_CONFIG_NAME);
+        Configuration::deleteByName(ShopgateConfigPrestashop::PRESTASHOP_CONFIG_KEY);
 
         /**
          * hooks
@@ -387,7 +387,7 @@ class ShopGate extends PaymentModule
         /**
          * delete shopgate config
          */
-        Configuration::deleteByName(ShopgateConfigPrestashop::DEFAULT_CONFIG_NAME);
+        Configuration::deleteByName(ShopgateConfigPrestashop::PRESTASHOP_CONFIG_KEY);
 
         return true;
     }
@@ -418,52 +418,12 @@ class ShopGate extends PaymentModule
             : 'id_carrier';
         $nativeCarriers  = $carrierList;
 
-        /**
-         * save on submit
-         */
         if (Tools::isSubmit('saveConfigurations')) {
-            $configs = Tools::getValue('configs', array());
+            $shopgateConfig->loadArray(Tools::getValue('configs', array()));
+            $shopgateConfig->initFolders();
+            $shopgateConfig->saveConfigurationFields();
 
-            /**
-             * set and store configs
-             */
-            foreach ($configs as $key => $value) {
-                $shopgateConfig->setByKey($key, $value);
-            }
-
-            try {
-                foreach ($shopgateConfig->initFolders() as $key => $value) {
-                    $shopgateConfig->setByKey($key, $value);
-                }
-                $shopgateConfig->store();
-            } catch (ShopgateLibraryException $e) {
-                $errorMessage = $e->getAdditionalInformation();
-            }
-
-            $settings = array();
-            foreach ($carrierList as $carrier) {
-                $settings['SG_MOBILE_CARRIER'][(int)$carrier[$carrierIdColumn]] = 0;
-            }
-
-            foreach (Tools::getValue('settings', array()) as $key => $value) {
-                if (!empty($value) && is_array($value) && !empty($settings[$key])) {
-                    $settings[$key] = $value + $settings[$key];
-                } else {
-                    $settings[$key] = $value;
-                }
-            }
-
-            /**
-             * store settings
-             */
-            foreach ($settings as $key => $value) {
-                if (in_array($key, ShopgateSettings::getSettingKeys())) {
-                    if (is_array($value)) {
-                        $value = base64_encode(serialize($value));
-                    }
-                    Configuration::updateValue($key, htmlentities($value, ENT_QUOTES));
-                }
-            }
+            ShopgateSettings::saveSettings($carrierList, Tools::getValue('settings', array()));
         }
 
         $languages = array();
@@ -510,9 +470,6 @@ class ShopGate extends PaymentModule
         $shopgateCarrier = new Carrier(Configuration::get('SG_CARRIER_ID'), $lang->id);
         $carrierList[]   = array('name' => $shopgateCarrier->name, 'id_carrier' => $shopgateCarrier->id);
 
-        /**
-         * price types
-         */
         $priceTypes = array(
             Shopgate_Model_Catalog_Price::DEFAULT_PRICE_TYPE_NET   => $this->l('Net'),
             Shopgate_Model_Catalog_Price::DEFAULT_PRICE_TYPE_GROSS => $this->l('Gross'),
