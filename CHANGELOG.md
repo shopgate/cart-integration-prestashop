@@ -683,4 +683,4 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Deactivates shopgate shop on uninstall
 
 [Unreleased]: https://github.com/shopgate/cart-integration-prestashop/compare/2.9.84...HEAD
-[Unreleased]: https://github.com/shopgate/cart-integration-prestashop/compare/2.9.83...2.9.84
+[2.9.84]: https://github.com/shopgate/cart-integration-prestashop/compare/2.9.83...2.9.84
