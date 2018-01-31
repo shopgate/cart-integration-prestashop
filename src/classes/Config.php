@@ -384,10 +384,13 @@ class ShopgateConfigPrestashop extends ShopgateConfig
 
         $shopNumbers           = array();
         $isoCode               = Language::getIsoById(Configuration::get('PS_LANG_DEFAULT'));
-        $shopNumbers[$isoCode] = $currentShopgateConfig['shop_number'];
 
         if ($this->isSerialized($currentShopgateConfig['shop_number'])) {
             $shopNumbers = unserialize($currentShopgateConfig['shop_number']);
+        } elseif (!is_array($currentShopgateConfig['shop_number'])) {
+            $shopNumbers[$isoCode] = $currentShopgateConfig['shop_number'];
+        } else {
+            $shopNumbers = $currentShopgateConfig['shop_number'];
         }
 
         if (Tools::getValue('shop_number')) {
