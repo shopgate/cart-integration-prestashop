@@ -5,10 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+
+## [2.9.85] - 2018-02-01
 ### Fixed
 - configuration issue
 
-## 2.9.84 - 2018-01-29
+## [2.9.84] - 2018-01-29
 ### Changed
 - use constant instead of string as key for LA POST shipping service element when adding it to shipping_service_list
 - set plugin to use version 2.9.71 of cart-integration-sdk instead of 2.9.69
@@ -16,7 +18,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - added store pickup to shipping_service_list
 - reset of Shopgate configuration for multi shops when settings were updated remotely
 
-## 2.9.83 - 2017-10-27
+## [2.9.83] - 2017-10-27
 ### Changed
 - migrated Shopgate integration for Prestashop to GitHub
 - extended error handling for database transactions
@@ -684,5 +686,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Module configuration error catch
 - Deactivates shopgate shop on uninstall
 
-[Unreleased]: https://github.com/shopgate/cart-integration-prestashop/compare/2.9.84...HEAD
+[Unreleased]: https://github.com/shopgate/cart-integration-prestashop/compare/2.9.85...HEAD
+[2.9.85]: https://github.com/shopgate/cart-integration-prestashop/compare/2.9.84...2.9.85
 [2.9.84]: https://github.com/shopgate/cart-integration-prestashop/compare/2.9.83...2.9.84
+[2.9.83]: https://github.com/shopgate/cart-integration-prestashop/tree/2.9.83
