@@ -129,7 +129,7 @@ class ShopgateConfigPrestashop extends ShopgateConfig
     {
         $shopgateConfiguration = unserialize(base64_decode(Configuration::get(self::PRESTASHOP_CONFIG_KEY)));
 
-        if ($shopgateConfiguration === null) {
+        if ($shopgateConfiguration === null || $shopgateConfiguration === false) {
             $shopgateConfiguration = array();
         }
 
