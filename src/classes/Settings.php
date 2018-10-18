@@ -404,6 +404,11 @@ class ShopgateSettings
                     $idTax   = self::getTaxIdFromTaxRule($taxRuleItem);
                     $idState = key($taxRuleItem);
                 }
+                
+                // Fix for exporting rules without assigned tax rate
+                if (!$idTax) {
+                    continue;
+                }
 
                 /** @var TaxCore $taxItem */
                 $taxItem = new Tax($idTax, $module->context->language->id);

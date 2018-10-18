@@ -5,6 +5,8 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+### Fixed
+- export of tax rules, will no longer be exported when no taxes are assigned
 
 ## [2.9.85] - 2018-02-01
 ### Fixed
