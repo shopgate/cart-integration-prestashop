@@ -42,6 +42,8 @@ $_MODULE['<{shopgate}prestashop>shopgate_5adcc6231aa37b272b4fd42d9067c3f0']     
 $_MODULE['<{shopgate}prestashop>shopgate_35b4b09d5d0686ec5c2e2cc9f3d9039c']         = 'Vorkasse';
 $_MODULE['<{shopgate}prestashop>shopgate_469ded86e4fce0e962b4d91cc7d426ce']         = 'Nachnahme';
 $_MODULE['<{shopgate}prestashop>shopgate_ad69e733ebae8d264bccaa38d68830e8']         = 'PayPal';
+$_MODULE['<{shopgate}prestashop>payment_466eadd40b3c10580e3ab4e8061161ce']          = 'Rechnung';
+$_MODULE['<{shopgate}prestashop>payment_73a61696f100b3858511e212a3feea6b']          = 'Kreditkarte';
 $_MODULE['<{shopgate}prestashop>shopgate_134c858fbc1e4f57acbe5e24ec507a7f']         = 'Mobile Payment';
 $_MODULE['<{shopgate}prestashop>shopgate_581568a8b927474e702ec083e3ab8daf']         = 'Hängt von der bei Shopgate ausgewählten Versandmethode ab';
 $_MODULE['<{shopgate}prestashop>shopgate_a02e49b5d07e5de5544bde8ea63dbeeb']         = 'Versand blockiert (Shopgate)';

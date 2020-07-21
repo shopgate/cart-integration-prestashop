@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## [Unreleased]
 ### Fixed
 - export of tax rules, will no longer be exported when no taxes are assigned
+- replaced deprecated method call to fix product export and increase compatibility with PrestaShop 1.7
+
+### Added
+- default payment method mapping for invoice and SIX Saferpay
 
 ## [2.9.85] - 2018-02-01
 ### Fixed
