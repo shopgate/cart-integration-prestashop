@@ -1238,7 +1238,7 @@ class ShopgateItemsItem extends ShopgateItemsAbstract
             $shopId,
             $itemId,
             $variantId,
-            (int)Country::getDefaultCountryId(),
+            (int)Context::getContext()->country->id,
             0,
             0,
             (int)(Validate::isLoadedObject($this->getPlugin()->getContext()->currency)

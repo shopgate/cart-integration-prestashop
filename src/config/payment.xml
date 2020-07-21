@@ -26,4 +26,12 @@
         <name>Bankwire</name>
         <not_blocked_not_paid>PS_OS_BANKWIRE</not_blocked_not_paid>
     </prepay>
+    <invoice>
+        <key>INVOICE</key>
+        <name>Invoice</name>
+    </invoice>
+    <cc_six_saferpay>
+        <key>SIX_CC</key>
+        <name>Credit Card</name>
+    </cc_six_saferpay>
 </payments>
