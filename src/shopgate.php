@@ -165,7 +165,7 @@ class ShopGate extends PaymentModule
             $this->tab = 'mobile';
         }
 
-        $this->version    = "2.9.85";
+        $this->version    = "2.9.86";
         $this->author     = 'Shopgate';
         $this->module_key = '';
 
