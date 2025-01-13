@@ -517,7 +517,7 @@ class ShopgateItemsCartExportJson extends ShopgateItemsCart
 
             /** @var CarrierCore $prestashopCarrier */
             $prestashopCarrier = new Carrier($realCarrierId, $shopgateContextHelper->getLanguageId());
-            $taxRulesGroup     = new TaxRulesGroup($prestashopCarrier->id_tax_rules_group);
+            $taxRulesGroup     = new TaxRulesGroup($prestashopCarrier->getIdTaxRulesGroup($shopgateContextHelper->getContext()));
             $resultCarrier     = new ShopgateShippingMethod();
 
             /**
@@ -535,7 +535,7 @@ class ShopgateItemsCartExportJson extends ShopgateItemsCart
             $resultCarrier->setId($realCarrierId);
             $resultCarrier->setTitle($carrier['name']);
             $resultCarrier->setDescription($carrier['delay']);
-            $resultCarrier->setSortOrder($carrier['position']);
+            $resultCarrier->setSortOrder($carrier['position'] ?? 1);
             $resultCarrier->setAmount($carrier['price_tax_exc']);
             $resultCarrier->setAmountWithTax($carrier['price']);
             $resultCarrier->setTaxClass($taxRulesGroup->name);
@@ -762,7 +762,7 @@ class ShopgateItemsCartExportJson extends ShopgateItemsCart
         $customer->lastname         = self::DEFAULT_CUSTOMER_LAST_NAME;
         $customer->firstname        = self::DEFAULT_CUSTOMER_FIRST_NAME;
         $customer->email            = self::DEFAULT_CUSTOMER_EMAIL;
-        $customer->passwd           = self::DEFAULT_CUSTOMER_PASSWD;
+        $customer->setWsPasswd(self::DEFAULT_CUSTOMER_PASSWD);
         $customer->newsletter       = 0;
         $customer->optin            = 0;
         $customer->id_default_group = $this->getDefaultCustomerGroupId();

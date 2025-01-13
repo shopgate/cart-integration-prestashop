@@ -43,7 +43,7 @@ class ShopgateItemAttributeHelper
      */
     public function getProductAttributes(Product $prestashopProduct)
     {
-        $prestashopAttributes = $prestashopProduct->getAttributeCombinaisons($this->exportLanguageId);
+        $prestashopAttributes = $prestashopProduct->getAttributeCombinations($this->exportLanguageId);
         $productAttributes    = array();
         
         foreach ($prestashopAttributes as $prestashopAttribute) {

@@ -54,7 +54,7 @@ class ShopgateItemsInput
             $insert['id_address_delivery'] = $idAddressDelivery;
             $insert['in_cart']             = 1;
         }
-        $this->db->getInstance()->autoExecuteWithNullValues(_DB_PREFIX_ . 'customization', $insert, 'INSERT');
+        $this->db->getInstance()->insert('customization', $insert);
 
         return $this->db->getInstance()->Insert_ID();
     }
@@ -71,15 +71,14 @@ class ShopgateItemsInput
 
         foreach ($inputs as $input) {
             $type = $this->getSystemInputType($input);
-            $this->db->getInstance()->autoExecuteWithNullValues(
-                _DB_PREFIX_ . 'customized_data',
+            $this->db->getInstance()->insert(
+                'customized_data',
                 array(
                     'id_customization' => $customizationId,
                     'type'             => $type,
                     'index'            => $input->getInputNumber(),
                     'value'            => $input->getUserInput(),
-                ),
-                'INSERT'
+                )
             );
         }
     }
