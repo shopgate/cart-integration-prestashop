@@ -54,7 +54,14 @@ class ShopgateItemsInput
             $insert['id_address_delivery'] = $idAddressDelivery;
             $insert['in_cart']             = 1;
         }
-        $this->db->getInstance()->insert('customization', $insert);
+
+        if (version_compare(_PS_VERSION_, '8', '>')) {
+            $this->db->getInstance()->insert('customization', $insert);
+        } else {
+            $this->db->getInstance()->autoExecuteWithNullValues(_DB_PREFIX_ . 'customization', $insert, 'INSERT');
+        }
+
+        
 
         return $this->db->getInstance()->Insert_ID();
     }
@@ -69,17 +76,32 @@ class ShopgateItemsInput
             return;
         }
 
-        foreach ($inputs as $input) {
-            $type = $this->getSystemInputType($input);
-            $this->db->getInstance()->insert(
-                'customized_data',
-                array(
-                    'id_customization' => $customizationId,
-                    'type'             => $type,
-                    'index'            => $input->getInputNumber(),
-                    'value'            => $input->getUserInput(),
-                )
-            );
+        if (version_compare(_PS_VERSION_, '8', '>')) {
+            foreach ($inputs as $input) {
+                $type = $this->getSystemInputType($input);
+                $this->db->getInstance()->insert(
+                    'customized_data',
+                    array(
+                        'id_customization' => $customizationId,
+                        'type'             => $type,
+                        'index'            => $input->getInputNumber(),
+                        'value'            => $input->getUserInput(),
+                    )
+                );
+            }
+        } else {
+            foreach ($inputs as $input) {
+                $this->db->getInstance()->autoExecuteWithNullValues(
+                    _DB_PREFIX_ . 'customized_data',
+                    array(
+                        'id_customization' => $customizationId,
+                        'type'             => $type,
+                        'index'            => $input->getInputNumber(),
+                        'value'            => $input->getUserInput(),
+                    ),
+                    'INSERT'
+                );
+            }
         }
     }
 

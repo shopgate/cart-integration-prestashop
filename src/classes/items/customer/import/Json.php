@@ -58,10 +58,15 @@ class ShopgateItemsCustomerImportJson extends ShopgateItemsCustomer
         $customerModel->lastname   = $customer->getLastName();
         $customerModel->firstname  = $customer->getFirstName();
         $customerModel->email      = $user;
-        $customerModel->setWsPasswd($pass);
         $customerModel->id_gender  = $this->mapGender($customer->getGender());
         $customerModel->birthday   = $customer->getBirthday();
         $customerModel->newsletter = $customer->getNewsletterSubscription();
+
+        if (version_compare(_PS_VERSION_, '8', '>')) {
+            $customerModel->setWsPasswd($pass);
+        } else {
+            $customerModel->passwd = Tools::encrypt($pass);
+        }
 
         $shopgateCustomFieldsHelper = new ShopgateCustomFieldsHelper();
         $shopgateCustomFieldsHelper->saveCustomFields($customerModel, $customer->getCustomFields());
