@@ -38,13 +38,6 @@ define('SHOPGATE_DIR', _PS_MODULE_DIR_ . 'shopgate/');
  */
 
 /**
- * extend
- */
-if (!in_array('BWProduct', get_declared_classes()) && version_compare(_PS_VERSION_, '1.5.2.0', '<')) {
-    require_once(SHOPGATE_DIR . 'core/extend/Product.php');
-}
-
-/**
  * Generic includes - all includes should be moved there later on
  */
 require_once(SHOPGATE_DIR . 'includes.php');
@@ -53,10 +46,6 @@ require_once(SHOPGATE_DIR . 'includes.php');
  * global
  */
 require_once(SHOPGATE_DIR . 'vendors/autoload.php');
-// restore autoloader
-if (version_compare(_PS_VERSION_, '1.5.0.0', '<')) {
-    spl_autoload_register('__autoload');
-}
 require_once(SHOPGATE_DIR . 'core/HookHelper.php');
 require_once(SHOPGATE_DIR . 'classes/Config.php');
 require_once(SHOPGATE_DIR . 'classes/Builder.php');
@@ -149,6 +138,8 @@ class ShopGate extends PaymentModule
      */
     public function __construct()
     {
+        // set minimal version
+        $this->ps_versions_compliancy = ['min' => '1.7.0.0', 'max' => _PS_VERSION_];
         $this->bootstrap                      = true;
         $this->cancellationRequestAlreadySent = false;
 
@@ -175,8 +166,6 @@ class ShopGate extends PaymentModule
         $this->description = $this->l(
             'Sell your products with your individual app and a website optimized for mobile devices.'
         );
-
-        include_once SHOPGATE_DIR . 'vendors/shopgate/prestashop-backward-compatibility/backward.php';
     }
 
     /**

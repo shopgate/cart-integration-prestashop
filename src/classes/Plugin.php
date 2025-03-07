@@ -63,8 +63,6 @@ class ShopgatePluginPrestashop extends ShopgatePlugin
 
     public function initializeContext()
     {
-        include_once SHOPGATE_DIR . 'vendors/shopgate/prestashop-backward-compatibility/backward.php';
-
         // Without this explicit setting of the currency, the system could choose the wrong one e.g. EUR instead of PLN
         $this->context->currency     = new Currency(Currency::getIdByIsoCode($this->config->getCurrency()));
         $this->context->language->id = Language::getIdByIso($this->config->getLanguage());
