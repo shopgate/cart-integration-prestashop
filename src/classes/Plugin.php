@@ -26,10 +26,8 @@ class ShopgatePluginPrestashop extends ShopgatePlugin
     /** @var ShopgateConfigPrestashop; */
     protected $config;
 
-    /** @var Context this variable is initialized by file /../vendors/shopgate/prestashop-backward-compatibility/backward.php */
     public $context;
 
-    /** @var Smarty this variable is initialized by file /../vendors/shopgate/prestashop-backward-compatibility/backward.php */
     public $smarty;
 
     /** @var ShopgateDb $db */
@@ -63,9 +61,8 @@ class ShopgatePluginPrestashop extends ShopgatePlugin
 
     public function initializeContext()
     {
-        // Without this explicit setting of the currency, the system could choose the wrong one e.g. EUR instead of PLN
-        $this->context->currency     = new Currency(Currency::getIdByIsoCode($this->config->getCurrency()));
-        $this->context->language->id = Language::getIdByIso($this->config->getLanguage());
+        $this->context = Context::getContext();
+        $this->smarty = $this->context->smarty;
     }
 
     /**
