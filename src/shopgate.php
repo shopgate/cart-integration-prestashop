@@ -623,7 +623,7 @@ class ShopGate extends PaymentModule
             );
             $this->context->smarty->assign('shopgateOrder', $shopgateOrder);
             $this->context->smarty->assign('apiOrder', $apiOrder);
-            $this->context->smarty->assign('orderComments', Tools::jsonDecode(base64_decode($shopgateOrder->comments)));
+            $this->context->smarty->assign('orderComments', ShopgateHelper::jsonDecode(base64_decode($shopgateOrder->comments)));
             $this->context->smarty->assign('modDir', $this->_path);
             $this->context->smarty->assign('paymentModel', $this->shopgatePaymentModel);
             $this->context->smarty->assign('shippingModel', $this->shopgateShippingModel);
