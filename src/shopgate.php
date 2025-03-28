@@ -27,7 +27,7 @@ if (!defined('_PS_VERSION_')) {
 /**
  * define shopgate version
  */
-define("SHOPGATE_PLUGIN_VERSION", "2.9.86-beta.1");
+define("SHOPGATE_PLUGIN_VERSION", "2.9.86-beta.2");
 
 /**
  * define module dir
