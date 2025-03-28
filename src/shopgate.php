@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Copyright Shopgate Inc.
  *
@@ -752,10 +753,10 @@ class ShopGate extends PaymentModule
     {
         // prevent prestashop for executing the hook point twice
         if ((version_compare(
-                _PS_VERSION_,
-                '1.5.0.0',
-                '<'
-            )) && !empty($param['product']) && (!($param['product'] instanceof ProductCore))
+            _PS_VERSION_,
+            '1.5.0.0',
+            '<'
+        )) && !empty($param['product']) && (!($param['product'] instanceof ProductCore))
         ) {
             return;
         }
@@ -833,8 +834,8 @@ class ShopGate extends PaymentModule
         } catch (ShopgateMerchantApiException $e) {
             $msg              = new Message();
             $msg->message     = $this->l('On order state') . ': ' . $orderState->name . ' - ' . $this->l(
-                    'Shopgate status was not updated because of following error'
-                ) . ': ' . $e->getMessage();
+                'Shopgate status was not updated because of following error'
+            ) . ': ' . $e->getMessage();
             $msg->id_order    = $id_order;
             $msg->id_employee = isset($params['cookie']->id_employee)
                 ? $params['cookie']->id_employee
@@ -940,9 +941,9 @@ class ShopGate extends PaymentModule
                 ShopgateLogger::LOGTYPE_DEBUG
             );
             if ($db->Execute(
-                    'ALTER TABLE `' . $tableName . '` ADD `' . $fieldName . '` ' . $columnProperties . ' AFTER `' . $insertAfterColumn . '`;',
-                    false
-                ) === false
+                'ALTER TABLE `' . $tableName . '` ADD `' . $fieldName . '` ' . $columnProperties . ' AFTER `' . $insertAfterColumn . '`;',
+                false
+            ) === false
             ) {
                 $this->log(
                     'installation failed: unable to add field "' . $fieldName . '" to table "' . $tableName . '". MySQL says: ' . var_export(

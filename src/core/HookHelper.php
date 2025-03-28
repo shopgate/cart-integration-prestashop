@@ -88,13 +88,13 @@ class HookHelper
         if ($result) {
             foreach ($result as $k => $module) {
                 if (($moduleInstance = Module::getInstanceByName($module['name'])) && is_callable(
-                        array($moduleInstance, 'hookpayment')
-                    )
+                    array($moduleInstance, 'hookpayment')
+                )
                 ) {
                     if (!$moduleInstance->currencies
                         || ($moduleInstance->currencies && sizeof(
-                                Currency::checkPaymentCurrencies($moduleInstance->id)
-                            ))
+                            Currency::checkPaymentCurrencies($moduleInstance->id)
+                        ))
                     ) {
                         $output = call_user_func(array($moduleInstance, 'hookpayment'), $hookArgs);
                         if (!empty($output)) {

@@ -49,8 +49,8 @@ abstract class ShopgateModObjectModel extends ObjectModel
     public static function updateShippingPrice($price)
     {
         $sql = 'UPDATE ' . _DB_PREFIX_ . 'delivery AS d SET price="' . (float)$price . '" WHERE d.id_carrier = ' . (int)Configuration::get(
-                'SG_CARRIER_ID'
-            );
+            'SG_CARRIER_ID'
+        );
 
         return Db::getInstance()->execute($sql);
     }

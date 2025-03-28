@@ -283,13 +283,13 @@ class ShopgateConfigPrestashop extends ShopgateConfig
                 if ($value[$length - 2] !== '"') {
                     return false;
                 }
-            // no break
+                // no break
             case 'b':
             case 'i':
             case 'd':
                 // This looks odd but it is quicker than isset()ing
                 $end .= ';';
-            // no break
+                // no break
             case 'a':
             case 'O':
                 $end .= '}';
@@ -311,7 +311,7 @@ class ShopgateConfigPrestashop extends ShopgateConfig
                     default:
                         return false;
                 }
-            // no break
+                // no break
             case 'N':
                 $end .= ';';
                 if ($value[$length - 1] !== $end[0]) {
@@ -337,10 +337,10 @@ class ShopgateConfigPrestashop extends ShopgateConfig
     {
         $db     = Db::getInstance(true);
         $query  = 'SELECT `id_configuration`, `value` FROM `' . _DB_PREFIX_ . str_replace(
-                '`',
-                '\`',
-                pSQL(Configuration::$definition['table'])
-            ) . '` WHERE `name` = "' . pSQL(self::PRESTASHOP_CONFIG_KEY) . '"';
+            '`',
+            '\`',
+            pSQL(Configuration::$definition['table'])
+        ) . '` WHERE `name` = "' . pSQL(self::PRESTASHOP_CONFIG_KEY) . '"';
         $result = $db->executeS($query, false);
         while ($row = $db->nextRow($result)) {
             if (!$data = @unserialize(base64_decode($row['value']))) {

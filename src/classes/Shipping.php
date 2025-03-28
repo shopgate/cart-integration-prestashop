@@ -163,9 +163,9 @@ class ShopgateShipping
              */
             case self::DEFAULT_PLUGIN_API_KEY:
                 return $this->_getNameByCarrierId($apiOrder->getShippingInfos()->getName());
-            /**
-             * switch from mapping
-             */
+                /**
+                 * switch from mapping
+                 */
             default:
                 return
                     sprintf(

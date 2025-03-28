@@ -530,9 +530,9 @@ class ShopgateSettings
         if (version_compare(_PS_VERSION_, '1.4.5.0', '<')) {
             $hookPayment = 'Payment';
             if (
-            Db::getInstance()->getValue(
-                'SELECT `id_hook` FROM `' . _DB_PREFIX_ . 'hook` WHERE `name` = \'displayPayment\''
-            )
+                Db::getInstance()->getValue(
+                    'SELECT `id_hook` FROM `' . _DB_PREFIX_ . 'hook` WHERE `name` = \'displayPayment\''
+                )
             ) {
                 $hookPayment = 'displayPayment';
             }

@@ -335,8 +335,7 @@ class ShopgateItemsItem extends ShopgateItemsAbstract
                  * tier prices
                  */
                 foreach (
-                    $this->getTierPrices($priceItem, $this->currentProduct->id, $productAttribute->getId()) as
-                    $tierPriceRule
+                    $this->getTierPrices($priceItem, $this->currentProduct->id, $productAttribute->getId()) as $tierPriceRule
                 ) {
                     $priceItem->addTierPriceGroup($tierPriceRule);
                 }

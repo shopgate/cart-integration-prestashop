@@ -166,9 +166,9 @@ class ShopgatePayment
                     }
                 }
                 break;
-            /**
-             * update order
-             */
+                /**
+                 * update order
+                 */
             case false:
                 /**
                  * payment is updated
