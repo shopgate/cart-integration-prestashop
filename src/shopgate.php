@@ -46,7 +46,7 @@ require_once(SHOPGATE_DIR . 'includes.php');
 /**
  * global
  */
-require_once(SHOPGATE_DIR . 'vendors/autoload.php');
+require_once(SHOPGATE_DIR . 'vendor/autoload.php');
 require_once(SHOPGATE_DIR . 'core/HookHelper.php');
 require_once(SHOPGATE_DIR . 'classes/Config.php');
 require_once(SHOPGATE_DIR . 'classes/Builder.php');

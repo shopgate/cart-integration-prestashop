@@ -3,7 +3,11 @@
 .travis.yml
 .php-cs.cache
 .php-cs.dist
+.php-cs-fixer.cache
+.php-cs-fixer.dist.php
+.phpunit.result.cache
 .travis.yml
+phpunit.xml.dist
 build_release_package.sh
 release/
 missing_classes.php
