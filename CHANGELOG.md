@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
+## [2.10.1] - 2025-03-28
 ### Fixed
 - tax rules will no longer be exported when no taxes are assigned
 
@@ -696,7 +697,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Module configuration error catch
 - Deactivates shopgate shop on uninstall
 
-[Unreleased]: https://github.com/shopgate/cart-integration-prestashop/compare/2.9.85...HEAD
+[Unreleased]: https://github.com/shopgate/cart-integration-prestashop/compare/2.10.1...HEAD
+[2.10.1]: https://github.com/shopgate/cart-integration-prestashop/compare/2.9.85...2.10.1
 [2.9.85]: https://github.com/shopgate/cart-integration-prestashop/compare/2.9.84...2.9.85
 [2.9.84]: https://github.com/shopgate/cart-integration-prestashop/compare/2.9.83...2.9.84
 [2.9.83]: https://github.com/shopgate/cart-integration-prestashop/tree/2.9.83
