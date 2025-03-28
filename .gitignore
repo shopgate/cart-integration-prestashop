@@ -5,7 +5,9 @@
 /.settings
 /.idea
 .DS_Store
-src/vendors
+vendor
 /.php-cs.cache
 /release/package
 composer.lock
+.phpunit.result.cache
+.php-cs-fixer.cache

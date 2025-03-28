@@ -20,17 +20,20 @@
  * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  */
 
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+
 /**
  * Class ShippingTest
  */
-class ShippingTest extends \PHPUnit_Framework_TestCase
+class ShippingTest extends TestCase
 {
     /** @var ShopgateShipping */
     private $subjectUnderTest;
 
-    public function setUp()
+    public function setUp(): void
     {
-        /** @var PHPUnit_Framework_MockObject_MockObject | ShopGate $shopGate */
+        /** @var MockObject | ShopGate $shopGate */
         $shopGate               = new PaymentModule();
         $this->subjectUnderTest = new ShopgateShipping($shopGate);
     }
@@ -59,9 +62,9 @@ class ShippingTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals($expectedOrder->id_carrier, $calculcatedOrder->id_carrier);
-        $this->assertEquals($expectedOrder->total_paid, $calculcatedOrder->total_paid);
-        $this->assertEquals($expectedOrder->total_paid_real, $calculcatedOrder->total_paid_real);
-        $this->assertEquals($expectedOrder->total_shipping, $calculcatedOrder->total_shipping);
+        $this->assertEqualsWithDelta($expectedOrder->total_paid, $calculcatedOrder->total_paid, 0.0001);
+        $this->assertEqualsWithDelta($expectedOrder->total_paid_real, $calculcatedOrder->total_paid_real, 0.0001);
+        $this->assertEqualsWithDelta($expectedOrder->total_shipping, $calculcatedOrder->total_shipping, 0.0001);
     }
 
     /**
@@ -191,9 +194,10 @@ class ShippingTest extends \PHPUnit_Framework_TestCase
      */
     public function testTaxRate($expectedTaxRate, $amountGross, $amountNet)
     {
-        $this->assertEquals(
+        $this->assertEqualsWithDelta(
             $expectedTaxRate,
-            $this->subjectUnderTest->calculateTaxRate($amountGross, $amountNet)
+            $this->subjectUnderTest->calculateTaxRate($amountGross, $amountNet),
+            0.0001
         );
     }
 

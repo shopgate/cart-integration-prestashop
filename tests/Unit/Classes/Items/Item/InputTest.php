@@ -21,12 +21,14 @@
  */
 namespace Shopgate\Tests\Unit\Classes\Items\Item;
 
-class InputTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class InputTest extends TestCase
 {
     /** @var \ShopgateItemsInput $class */
     protected $class;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->class = new \ShopgateItemsInput(new \ShopgateDb());
     }

@@ -21,21 +21,24 @@
 
 namespace Shopgate\Tests\Unit\Classes\Helpers\Coupon;
 
-class ValidationTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+
+class ValidationTest extends TestCase
 {
     /** @var \ShopgateHelperCouponValidation */
     private $subjectUnderTest;
 
-    /** @var \ShopgatePrestashopVersion|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var \ShopgatePrestashopVersion|MockObject */
     private $prestashopVersionMock;
 
-    /** @var \ShopgateContextHelper|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var \ShopgateContextHelper|MockObject */
     private $contextHelperMock;
 
-    /** @var \ShopgateHelpersCouponCartRuleFactory|\PHPUnit_Framework_MockObject_MockObject */
+    /** @var \ShopgateHelpersCouponCartRuleFactory|MockObject */
     private $cartRuleFactoryMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->prestashopVersionMock = $this
             ->getMockBuilder('ShopgatePrestashopVersion')
@@ -267,7 +270,7 @@ class ValidationTest extends \PHPUnit_Framework_TestCase
      * @param mixed                   $context
      * @param array                   $package
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     private function buildCartRuleMock(
         $cartRuleId,
@@ -284,7 +287,6 @@ class ValidationTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('getFieldByLang', 'getByCouponCode', 'getContextualValue', 'checkValidity'))
             ->getMock();
 
-        /** @noinspection PhpUndefinedFieldInspection Needed as this is only a mock object */
         $cartRuleMock->id = $cartRuleId;
 
         $cartRuleMock

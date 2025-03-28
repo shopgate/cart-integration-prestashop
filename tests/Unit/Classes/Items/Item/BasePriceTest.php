@@ -22,7 +22,10 @@
 
 namespace Shopgate\Tests\Unit\Classes\Items\Item;
 
-class BasePriceTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+
+class BasePriceTest extends TestCase
 {
     const BASE_PRICE                    = 'base_price';
     const BASE_PRICE_UNIT               = 'base_unit';
@@ -45,7 +48,7 @@ class BasePriceTest extends \PHPUnit_Framework_TestCase
     /** @var \ShopgatePrestashopVersion */
     protected $prestashopVersion;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->prestashopVersion = new \ShopgatePrestashopVersion('1.7.1.1');
         $this->subjectUnderTest  = new \ShopgateItemsBasePrice(
@@ -319,7 +322,7 @@ class BasePriceTest extends \PHPUnit_Framework_TestCase
     /**
      * @param float $unitPrice
      *
-     * @return \Product | \PHPUnit_Framework_MockObject_MockObject
+     * @return \Product | MockObject
      */
     public function getProductMock($unitPrice)
     {
@@ -332,7 +335,7 @@ class BasePriceTest extends \PHPUnit_Framework_TestCase
     /**
      * @param int $unitPriceImpact
      *
-     * @return \Combination | \PHPUnit_Framework_MockObject_MockObject
+     * @return \Combination | MockObject
      */
     public function getCombinationMock($unitPriceImpact)
     {
