@@ -293,7 +293,7 @@ class ShopgateShipping
         $contain_states = null
     ) {
         if (!Validate::isBool($active_countries) || !Validate::isBool($active_carriers)) {
-            die(Tools::displayError());
+            die(Tools::displayError("getDeliveryCountries"));
         }
 
         $states = Db::getInstance(_PS_USE_SQL_SLAVE_)->executeS(

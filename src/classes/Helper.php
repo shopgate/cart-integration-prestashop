@@ -271,4 +271,27 @@ class ShopgateHelper
             return array($item->getItemNumber(), null);
         }
     }
+
+    /**
+     * @param $data
+     * @param $assoc
+     * @param $depth
+     * @param $options
+     * @return mixed
+     */
+    public static function jsonDecode($data, $assoc = false, $depth = 512, $options = 0)
+    {
+        return json_decode($data, $assoc, $depth, $options);
+    }
+
+    /**
+     * @param $data
+     * @param $options
+     * @param $depth
+     * @return false|string
+     */
+    public static function jsonEncode($data, $options = 0, $depth = 512)
+    {
+        return json_encode($data, $options, $depth);
+    }
 }

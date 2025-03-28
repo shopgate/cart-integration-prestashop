@@ -255,7 +255,7 @@ class ShopgateItemsInputOrderJson extends ShopgateItemsOrder
 
             throw new ShopgateLibraryException(
                 ShopgateLibraryException::UNKNOWN_ERROR_CODE,
-                'Unable to create order:' . print_r($exception->getMessage(), true),
+                'Unable to create order:' . print_r(version_compare(_PS_VERSION_, '8', '>') ? $exception : $exception->getMessage(), true),
                 true,
                 true,
                 $exception

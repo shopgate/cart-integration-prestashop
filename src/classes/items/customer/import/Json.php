@@ -38,7 +38,7 @@ class ShopgateItemsCustomerImportJson extends ShopgateItemsCustomer
             );
         }
 
-        if ($pass && !Validate::isPasswd($pass)) {
+        if ($pass && !Validate::isAcceptablePasswordScore($pass)) {
             throw new ShopgateLibraryException(
                 ShopgateLibraryException::PLUGIN_REGISTER_CUSTOMER_ERROR,
                 'Password validation error',
@@ -58,10 +58,15 @@ class ShopgateItemsCustomerImportJson extends ShopgateItemsCustomer
         $customerModel->lastname   = $customer->getLastName();
         $customerModel->firstname  = $customer->getFirstName();
         $customerModel->email      = $user;
-        $customerModel->passwd     = Tools::encrypt($pass);
         $customerModel->id_gender  = $this->mapGender($customer->getGender());
         $customerModel->birthday   = $customer->getBirthday();
         $customerModel->newsletter = $customer->getNewsletterSubscription();
+
+        if (version_compare(_PS_VERSION_, '8', '>')) {
+            $customerModel->setWsPasswd($pass);
+        } else {
+            $customerModel->passwd = Tools::encrypt($pass);
+        }
 
         $shopgateCustomFieldsHelper = new ShopgateCustomFieldsHelper();
         $shopgateCustomFieldsHelper->saveCustomFields($customerModel, $customer->getCustomFields());
@@ -167,7 +172,7 @@ class ShopgateItemsCustomerImportJson extends ShopgateItemsCustomer
         /**
          * prepare states
          */
-        $stateParts = explode('-', $address->getState());
+        $stateParts = explode('-', $address->getState() ?? '');
 
         if (count($stateParts) == 2) {
             $address->setState($stateParts[1]);

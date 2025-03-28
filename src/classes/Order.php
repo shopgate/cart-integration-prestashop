@@ -97,7 +97,7 @@ class ShopgateOrderPrestashop extends ShopgateModObjectModel
         }
 
         if (is_array($this->comments)) {
-            $encodedData = Tools::jsonEncode($this->comments);
+            $encodedData = ShopgateHelper::jsonEncode($this->comments);
 
             $this->comments = pSQL(base64_encode($encodedData));
         } else {
@@ -400,7 +400,7 @@ class ShopgateOrderPrestashop extends ShopgateModObjectModel
 
                         if (is_string($this->comments)) {
                             $data           = base64_decode($this->comments);
-                            $this->comments = Tools::jsonDecode($data);
+                            $this->comments = ShopgateHelper::jsonDecode($data);
                         }
 
                         if (is_array($this->comments)) {

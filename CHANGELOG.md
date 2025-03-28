@@ -11,7 +11,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Added
 - default payment method mapping for invoice and SIX Saferpay
-
+- added support for PrestaShop 8.x
 ## [2.9.85] - 2018-02-01
 ### Fixed
 - configuration issue
